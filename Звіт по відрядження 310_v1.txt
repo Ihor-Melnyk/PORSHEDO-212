@@ -1,7 +1,7 @@
 function onBeforeCardSave() {
   copyTableValueFoodTable();
   copyTableValueTravelExpense();
-  checkFoodChoiceInTable(); 
+  checkFoodChoiceInTable();
 }
 
 function copyTableValueFoodTable() {
@@ -183,7 +183,6 @@ function controlShow(CODE) {
 }
 function onCardInitialize() {
   if (EdocsApi.getAttributeValue("FoodTable").value.length == 0) {
-    onChangetravelDirection();
     onChangedataTripStart();
     onChangedataTripEnd();
     onChangetravelDirection();
@@ -276,15 +275,12 @@ function onChangedataTripEnd() {
 //1.Заповнити поле Rate методом зовнішньої системи EdocsGetExchangeRate
 function setRate() {
   debugger;
-
   const currencyEUR = EdocsApi.getAttributeValue("currencyEUR");
-
   const dateRate = EdocsApi.getAttributeValue("dateRate").value;
 
   if (currencyEUR.value && dateRate) {
     const methodData = {
       currencyEUR: currencyEUR.value,
-
       dateRate: dateRate,
     };
 
@@ -346,8 +342,8 @@ function checkFoodChoiceInTable() {
     for (var i = 0; i < table.length; i++) {
       var value = table[i]
         .find((x) => x.code == "FoodChoice")
-        .value.split(", ");
-      if (value.length > 1 && value.includes("0")) {
+        ?.value.split(", ");
+      if (value && value.length > 1 && value.includes("0")) {
         throw "0 не можна проставляти, якщо також  вказані інші значення ";
       }
     }
