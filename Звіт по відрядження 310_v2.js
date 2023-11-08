@@ -337,15 +337,22 @@ function onChangevutratuCurrency(clearOnInit = false) {
 }
 
 function checkFoodChoiceInTable() {
+  var flagFromThrow = null;
   var table = EdocsApi.getAttributeValue("FoodTable").value;
   if (table) {
     for (var i = 0; i < table.length; i++) {
-      var value = table[i]
-        .find((x) => x.code == "FoodChoice")
-        ?.value.split(", ");
-      if (value && value.length > 1 && value.includes("0")) {
-        throw "0 не можна проставляти, якщо також  вказані інші значення ";
+      var foodChoiceElements = table[i].filter((x) => x.code === "FoodChoice");
+      for (var j = 0; j < foodChoiceElements.length; j++) {
+        if (foodChoiceElements[j].value.includes("0")) {
+          foodChoiceElements[j].value = "";
+          flagFromThrow = 1;
+        }
       }
+    }
+    EdocsApi.setAttributeValue(table);
+    if (flagFromThrow) {
+      flagFromThrow = null;
+      throw "0 не можна проставляти, якщо також  вказані інші значення ";
     }
   }
 }
